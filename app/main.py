@@ -1,6 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.middleware.gzip import GZipMiddleware
+import time
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
 from pydantic import BaseModel
 from datetime import date, timedelta
 from typing import Optional, List
@@ -18,6 +22,18 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title=settings.APP_NAME, version=settings.API_VERSION)
+
+class RequestLoggingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        start_time = time.time()
+        response = await call_next(request)
+        process_time = time.time() - start_time
+        logger.info(f"Path: {request.url.path} Method: {request.method} Time: {process_time:.2f}s Status: {response.status_code}")
+        return response
+
+# Add the middlewares
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(RequestLoggingMiddleware)
 
 # Get frontend URLs from environment variable or use defaults
 frontend_urls = os.getenv('CORS_ORIGINS', 'https://travel-ai-frontend-877104202725.us-central1.run.app')
