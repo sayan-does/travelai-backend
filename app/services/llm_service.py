@@ -48,6 +48,10 @@ When generating itineraries:
 - Balance tourist attractions with local experiences
 - Account for travel time between locations
 
+-Important
+ .Give response in  a table format with location, time, cost, and description.
+ .The response should be under 500 words.
+
 Keep responses clear, concise, and well-structured."""
 
         logger.info("LLM Service initialized successfully")
