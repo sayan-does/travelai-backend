@@ -6,6 +6,32 @@ import os
 
 logger = logging.getLogger(__name__)
 
+def __init__(self):
+    logger.info(f"Initializing LLM Service with model: {settings.MODEL_NAME}")
+    self.model_name = settings.MODEL_NAME
+    
+    # Set Hugging Face token from settings
+    os.environ["HUGGING_FACE_HUB_TOKEN"] = settings.HUGGING_FACE_HUB_TOKEN
+    if not settings.HUGGING_FACE_HUB_TOKEN:
+        logger.warning("HUGGING_FACE_HUB_TOKEN not set in settings")
+    
+    # Initialize the model and tokenizer with retry and resume capability
+    self.tokenizer = AutoTokenizer.from_pretrained(
+        settings.MODEL_NAME,
+        trust_remote_code=True,
+        use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,  # Add auth token
+        resume_download=True  # Enable resume capability
+    )
+    self.model = AutoModelForVision2Seq.from_pretrained(
+        settings.MODEL_NAME,
+        device_map="auto" if torch.cuda.is_available() else "cpu",
+        trust_remote_code=True,
+        low_cpu_mem_usage=True,
+        use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,  # Add auth token
+        resume_download=True,  # Enable resume capability
+        offload_folder="offload"  # Add offload folder for large models
+    ).eval()
+
 class LLMService:
     def __init__(self):
         logger.info(f"Initializing LLM Service with model: {settings.MODEL_NAME}")
