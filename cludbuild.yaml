@@ -1,0 +1,33 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/travel-planner-api', '.']
+
+  # Push the image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/travel-planner-api']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+    - 'run'
+    - 'deploy'
+    - 'travel-planner-api'
+    - '--image'
+    - 'gcr.io/$PROJECT_ID/travel-planner-api'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--memory'
+    - '4Gi'
+    - '--set-env-vars'
+    - 'HUGGING_FACE_HUB_TOKEN=${_HUGGING_FACE_HUB_TOKEN}'
+
+images:
+  - 'gcr.io/$PROJECT_ID/travel-planner-api'
+
+substitutions:
+  _HUGGING_FACE_HUB_TOKEN: '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' # This will be set in Cloud Build triggers
