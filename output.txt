@@ -273,7 +273,7 @@ if __name__ == "__main__":
     run_all_tests() 
 ==================================================
 Contents of file: I:\travelai-backend\.git\COMMIT_EDITMSG
-fixed docker
+fixed issues
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\config
@@ -298,7 +298,7 @@ Unnamed repository; edit this file 'description' to name the repository.
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\FETCH_HEAD
-3982ac51723ca31916dafe146e904d1912e02b8f		branch 'master' of https://github.com/sayan-does/travelai-backend
+63133487e5d1e862404b8260f4fa8247caf38cea		branch 'master' of https://github.com/sayan-does/travelai-backend
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\HEAD
@@ -1240,6 +1240,7 @@ a8048cb427e056d136df38e99e44b4ed16bff820 b0cef7a3741ca913878605915d31d49b8659a7c
 b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189de ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569505 +0530	commit: fixed env
 5da966fd399b7cc7ae319892dcbd6958205189de 35109ef59df2adf692526dc37d7a467b19d0a1e2 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569751 +0530	commit: fixed env
 35109ef59df2adf692526dc37d7a467b19d0a1e2 3982ac51723ca31916dafe146e904d1912e02b8f ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737573129 +0530	commit: fixed docker
+3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654882 +0530	commit: fixed issues
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\logs\refs\heads\master
@@ -1249,6 +1250,7 @@ a8048cb427e056d136df38e99e44b4ed16bff820 b0cef7a3741ca913878605915d31d49b8659a7c
 b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189de ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569505 +0530	commit: fixed env
 5da966fd399b7cc7ae319892dcbd6958205189de 35109ef59df2adf692526dc37d7a467b19d0a1e2 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569751 +0530	commit: fixed env
 35109ef59df2adf692526dc37d7a467b19d0a1e2 3982ac51723ca31916dafe146e904d1912e02b8f ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737573129 +0530	commit: fixed docker
+3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654882 +0530	commit: fixed issues
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\logs\refs\remotes\origin\HEAD
@@ -1261,6 +1263,7 @@ a8048cb427e056d136df38e99e44b4ed16bff820 b0cef7a3741ca913878605915d31d49b8659a7c
 b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189de ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569512 +0530	update by push
 5da966fd399b7cc7ae319892dcbd6958205189de 35109ef59df2adf692526dc37d7a467b19d0a1e2 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737569878 +0530	update by push
 35109ef59df2adf692526dc37d7a467b19d0a1e2 3982ac51723ca31916dafe146e904d1912e02b8f ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737573141 +0530	update by push
+3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654892 +0530	update by push
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\00\7af26b23d928d6d186b664e458a1e2339f0a01
@@ -1291,12 +1294,20 @@ Contents of file: I:\travelai-backend\.git\objects\39\82ac51723ca31916dafe146e90
 Error reading file I:\travelai-backend\.git\objects\39\82ac51723ca31916dafe146e904d1912e02b8f: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
 
 ==================================================
+Contents of file: I:\travelai-backend\.git\objects\4f\b438ddb7d289d0ffadd69807f7134fd3aa9a94
+Error reading file I:\travelai-backend\.git\objects\4f\b438ddb7d289d0ffadd69807f7134fd3aa9a94: 'utf-8' codec can't decode byte 0x90 in position 3: invalid start byte
+
+==================================================
 Contents of file: I:\travelai-backend\.git\objects\5d\a966fd399b7cc7ae319892dcbd6958205189de
 Error reading file I:\travelai-backend\.git\objects\5d\a966fd399b7cc7ae319892dcbd6958205189de: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\60\ea599f38d776a2a1fbfcfd386ee8c1c06165ce
 Error reading file I:\travelai-backend\.git\objects\60\ea599f38d776a2a1fbfcfd386ee8c1c06165ce: 'utf-8' codec can't decode byte 0xb0 in position 7: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\63\133487e5d1e862404b8260f4fa8247caf38cea
+Error reading file I:\travelai-backend\.git\objects\63\133487e5d1e862404b8260f4fa8247caf38cea: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\68\f77b705e829317a930ba34c737a338891a987e
@@ -1319,12 +1330,24 @@ Contents of file: I:\travelai-backend\.git\objects\7e\d670546cccb9bc4a239e44bc38
 Error reading file I:\travelai-backend\.git\objects\7e\d670546cccb9bc4a239e44bc386f7affe0d2fd: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
 
 ==================================================
+Contents of file: I:\travelai-backend\.git\objects\7e\ed4d95e5e723e8de3f34a1f1530c88429e2054
+Error reading file I:\travelai-backend\.git\objects\7e\ed4d95e5e723e8de3f34a1f1530c88429e2054: 'utf-8' codec can't decode byte 0x8d in position 2: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\8b\1b13a16e5b3131ad24e4c06d41e1db8a1c5711
+Error reading file I:\travelai-backend\.git\objects\8b\1b13a16e5b3131ad24e4c06d41e1db8a1c5711: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
+
+==================================================
 Contents of file: I:\travelai-backend\.git\objects\8b\76c45069d520713f00bf69f10f97f53de97dd1
 Error reading file I:\travelai-backend\.git\objects\8b\76c45069d520713f00bf69f10f97f53de97dd1: 'utf-8' codec can't decode byte 0xd0 in position 18: invalid continuation byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\9d\528142dcc81c264ce64cf04fb5c31843fd4f25
 Error reading file I:\travelai-backend\.git\objects\9d\528142dcc81c264ce64cf04fb5c31843fd4f25: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\a1\106c93101f1e113f637903785d8e414ee96ed4
+Error reading file I:\travelai-backend\.git\objects\a1\106c93101f1e113f637903785d8e414ee96ed4: 'utf-8' codec can't decode byte 0xd0 in position 18: invalid continuation byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\a8\048cb427e056d136df38e99e44b4ed16bff820
@@ -1351,8 +1374,16 @@ Contents of file: I:\travelai-backend\.git\objects\bf\6855ffeefd42444db4aae3d840
 Error reading file I:\travelai-backend\.git\objects\bf\6855ffeefd42444db4aae3d840871684fd6ef4: 'utf-8' codec can't decode byte 0xe5 in position 2: invalid continuation byte
 
 ==================================================
+Contents of file: I:\travelai-backend\.git\objects\d1\c5fc47312353653e8aa81623a7e27d16a94252
+Error reading file I:\travelai-backend\.git\objects\d1\c5fc47312353653e8aa81623a7e27d16a94252: 'utf-8' codec can't decode byte 0xed in position 2: invalid continuation byte
+
+==================================================
 Contents of file: I:\travelai-backend\.git\objects\d2\9fa56f64e16b2b87bde35efb4b575a4a5a8f82
 Error reading file I:\travelai-backend\.git\objects\d2\9fa56f64e16b2b87bde35efb4b575a4a5a8f82: 'utf-8' codec can't decode byte 0x85 in position 2: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\d6\65b1eb070d1dc81c19b0cfdf87b6819ac582c9
+Error reading file I:\travelai-backend\.git\objects\d6\65b1eb070d1dc81c19b0cfdf87b6819ac582c9: 'utf-8' codec can't decode byte 0xb5 in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\e1\8352a68873f4f02ed5bb3c1964719b14ff798f
@@ -1365,6 +1396,10 @@ Error reading file I:\travelai-backend\.git\objects\ed\94d2f2fc4f05cf2904a83c89c
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\f1\4045564e8a032db00c22eb8b81178b352c7405
 Error reading file I:\travelai-backend\.git\objects\f1\4045564e8a032db00c22eb8b81178b352c7405: 'utf-8' codec can't decode byte 0x8e in position 3: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\f7\13001af2cceb51e259e0be9d49d894fccafc0b
+Error reading file I:\travelai-backend\.git\objects\f7\13001af2cceb51e259e0be9d49d894fccafc0b: 'utf-8' codec can't decode byte 0x9d in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\f7\2e1b33de3417b573a7ba2ae6a2bc4306d9c285
@@ -1388,7 +1423,7 @@ Error reading file I:\travelai-backend\.git\objects\pack\pack-c7bd8f05ed3b301d6e
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\heads\master
-3982ac51723ca31916dafe146e904d1912e02b8f
+63133487e5d1e862404b8260f4fa8247caf38cea
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\remotes\origin\HEAD
@@ -1396,7 +1431,7 @@ ref: refs/remotes/origin/master
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\remotes\origin\master
-3982ac51723ca31916dafe146e904d1912e02b8f
+63133487e5d1e862404b8260f4fa8247caf38cea
 
 ==================================================
 Contents of file: I:\travelai-backend\app\config.py
@@ -1694,8 +1729,19 @@ When generating itineraries:
 - Account for travel time between locations
 
 -Important
- .Give response in  a table format with location, time, cost, and description.
- .The response should be under 500 words.
+    .Give response in  a {
+    destination: "India",
+    days: [
+        {
+        activities: "Day 1 activities description..."
+        },
+        {
+        activities: "Day 2 activities description..."
+        }
+        // ... more days
+    ]
+} format with location, time, cost, and description.
+    .The response should be under 500 words.
 
 Keep responses clear, concise, and well-structured."""
 
@@ -1817,7 +1863,7 @@ Contents of file: I:\travelai-backend\app\services\__init__.py
 
 ==================================================
 Contents of file: I:\travelai-backend\app\services\__pycache__\llm_service.cpython-310.pyc
-Error reading file I:\travelai-backend\app\services\__pycache__\llm_service.cpython-310.pyc: 'utf-8' codec can't decode byte 0xd0 in position 8: invalid continuation byte
+Error reading file I:\travelai-backend\app\services\__pycache__\llm_service.cpython-310.pyc: 'utf-8' codec can't decode byte 0x94 in position 9: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\app\services\__pycache__\__init__.cpython-310.pyc

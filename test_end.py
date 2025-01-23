@@ -32,13 +32,21 @@ def test_generate_itinerary():
     print("\nItinerary Generation Response:", response.json())
 
 def test_chat():
-    """Test the chat endpoint"""
+    """Test the chat endpoint with formatted prompt"""
+    system_prompt = "You are a helpful travel assistant."
+    user_input = "Can you suggest a nice place to visit in Paris?"
+    context = "The user is planning a visit to Paris and prefers historical landmarks."
+
+    # Create the formatted prompt
+    formatted_prompt = f"{system_prompt}\n\nContext: {context}\n\nUser: {user_input}\n\nAssistant:"
+
     payload = {
-        "message": "Can you suggest a nice place to visit in Paris?"
+        "message": formatted_prompt
     }
-    
+
     response = requests.post(f"{BASE_URL}/chat", json=payload)
     print("\nChat Response:", response.json())
+
 
 def run_all_tests():
     """Run all test functions"""
