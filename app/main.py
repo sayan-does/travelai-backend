@@ -40,9 +40,7 @@ frontend_urls = os.getenv('CORS_ORIGINS', 'https://travel-ai-frontend-8771042027
 allowed_origins = [url.strip() for url in frontend_urls.split(',')]
 allowed_origins.extend([
     "http://localhost:5173",  # Vite default
-    "http://localhost:3000",  # Next.js default
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
+    "http://localhost:3000"  # Next.js default
 ])
 
 # Enable CORS
@@ -117,7 +115,7 @@ class ChatResponse(BaseModel):
 # Endpoints
 
 
-@app.get("/health")
+@app.get("/")
 async def health_check():
     return {"status": "healthy"}
 
@@ -182,13 +180,11 @@ async def generate_itinerary(trip_request: TripRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/chat", response_model=ChatResponse)
+@app.get("/chat", response_model=ChatResponse)
 async def chat(message: ChatMessage):
     try:
         logger.info(f"Received chat message: {message.message}")
         
-        
-        print("hello world")
         response = await llm_service.generate_chat_response(message.message)
         
         return ChatResponse(response=response)
