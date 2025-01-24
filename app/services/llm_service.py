@@ -49,19 +49,21 @@ When generating itineraries:
 - Account for travel time between locations
 
 -Important
-    .Give response in  a {
+    .Give response in  a 
+    {
     destination: "India",
     days: [
         {
-        activities: "Day 1 activities description..."
+        activities: "Day 1 activities,time, cost, and description..."
         },
         {
-        activities: "Day 2 activities description..."
+        activities: "Day 2 activities,time, cost, and description..."
         }
-        // ... more days
-    ]
-} format with location, time, cost, and description.
-    .The response should be under 500 words.
+        ... more days
+         ]
+    } 
+        format with location, time, cost, and description.
+    .The response should be under 300 words.
 
 Keep responses clear, concise, and well-structured."""
 
