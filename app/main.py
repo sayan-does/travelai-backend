@@ -22,6 +22,15 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title=settings.APP_NAME, version=settings.API_VERSION)
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initialize LLM service
 llm_service = LLMService()
 
