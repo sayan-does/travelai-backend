@@ -20,17 +20,17 @@ class LLMService:
         self.tokenizer = AutoTokenizer.from_pretrained(
             settings.MODEL_NAME,
             trust_remote_code=True,
-            use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,  # Add auth token
-            resume_download=True  # Enable resume capability
+            use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,
+            resume_download=True
         )
         self.model = AutoModelForVision2Seq.from_pretrained(
             settings.MODEL_NAME,
             device_map="auto" if torch.cuda.is_available() else "cpu",
             trust_remote_code=True,
             low_cpu_mem_usage=True,
-            use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,  # Add auth token
-            resume_download=True,  # Enable resume capability
-            offload_folder="offload"  # Add offload folder for large models
+            use_auth_token=settings.HUGGING_FACE_HUB_TOKEN,
+            resume_download=True,
+            offload_folder="offload"
         ).eval()
         
         # System prompt optimized for Qwen2-VL-2B-Instruct
@@ -48,23 +48,6 @@ When generating itineraries:
 - Balance tourist attractions with local experiences
 - Account for travel time between locations
 
--Important
-    .Give response in  a 
-    {
-    destination: "India",
-    days: [
-        {
-        activities: "Day 1 activities,time, cost, and description..."
-        },
-        {
-        activities: "Day 2 activities,time, cost, and description..."
-        }
-        ... more days
-         ]
-    } 
-        format with location, time, cost, and description.
-    .The response should be under 300 words.
-
 Keep responses clear, concise, and well-structured."""
 
         logger.info("LLM Service initialized successfully")
@@ -77,7 +60,6 @@ Keep responses clear, concise, and well-structured."""
         try:
             logger.info(f"Generating itinerary for {destination}")
             
-            # Create the itinerary prompt
             prompt = self._create_prompt(
                 f"Create a travel itinerary for {destination} from {start_date} to {end_date} with a {budget_level} budget.",
                 f"Destination: {destination}\nDates: {start_date} to {end_date}\nBudget: {budget_level}"
@@ -95,70 +77,19 @@ Keep responses clear, concise, and well-structured."""
                 )
             
             response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            return self._parse_response(response)
+            return response
             
         except Exception as e:
             logger.error(f"Error in generate_itinerary: {str(e)}")
-            raise
-
-    def _parse_response(self, response):
-        try:
-            from ..utils.text_parser import extract_time, extract_cost
-            
-            # Remove the prompt and system message from the response
-            itinerary_text = response.split("Assistant:")[-1].strip()
-            
-            # Split into days
-            days = itinerary_text.split("Day")
-            parsed_days = []
-            
-            for day in days[1:]:  # Skip the first empty split
-                activities = []
-                day_content = day.strip()
-                
-                # Split into activities
-                activity_lines = [line.strip() 
-                                for line in day_content.split('\n') 
-                                if line.strip()]
-                
-                current_activity = None
-                for line in activity_lines[1:]:  # Skip the "X:" line
-                    if line.startswith('-'):
-                        # New activity
-                        if current_activity:
-                            activities.append(current_activity)
-                        
-                        activity_text = line[1:].strip()
-                        current_activity = {
-                            "title": activity_text.split('-')[0].strip(),
-                            "description": "",
-                            "time": extract_time(activity_text),
-                            "cost_estimate": extract_cost(activity_text)
-                        }
-                    elif current_activity:
-                        # Description line
-                        current_activity["description"] += line + " "
-                
-                if current_activity:
-                    activities.append(current_activity)
-                
-                if activities:
-                    parsed_days.append(activities)
-            
-            return parsed_days
-            
-        except Exception as e:
-            logger.error(f"Error parsing LLM response: {str(e)}")
             raise
 
     async def generate_chat_response(self, message: str):
         try:
             logger.info("Generating chat response")
             
-            # Create the chat prompt
             prompt = self._create_prompt(
                 message,
-                "Previous conversation: None"  # You could add conversation history here
+                "Previous conversation: None"
             )
             
             inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)
@@ -173,7 +104,6 @@ Keep responses clear, concise, and well-structured."""
                 )
             
             response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            # Remove the system prompt and user message from the response
             response = response.split("Assistant:")[-1].strip()
             return response
                 

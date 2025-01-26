@@ -80,29 +80,20 @@ async def get_itinerary(
         inputs = llm_service.tokenizer(prompt, return_tensors="pt").to(llm_service.model.device)
         
         with torch.no_grad():
-            try:
-                outputs = llm_service.model.generate(
-                    **inputs,
-                    max_new_tokens=1024,
-                    temperature=0.7,
-                    top_p=0.9,
-                    repetition_penalty=1.1
-                )
-                
-                response = llm_service.tokenizer.decode(outputs[0], skip_special_tokens=True)
-                logger.info(f"Generated response: {response}")
-                
-                try:
-                    itinerary_json = json.loads(response)
-                    return itinerary_json
-                except json.JSONDecodeError as e:
-                    logger.error(f"Error parsing response as JSON: {response}")
-                    raise HTTPException(status_code=500, detail=f"Invalid JSON response: {str(e)}")
-                
-            except Exception as e:
-                logger.error(f"Error in model generation: {str(e)}")
-                raise HTTPException(status_code=500, detail=f"Model generation error: {str(e)}")
-                
+            outputs = llm_service.model.generate(
+                **inputs,
+                max_new_tokens=1024,
+                temperature=0.7,
+                top_p=0.9,
+                repetition_penalty=1.1
+            )
+            
+            response = llm_service.tokenizer.decode(outputs[0], skip_special_tokens=True)
+            logger.info(f"Generated response: {response}")
+            
+            # Return the raw response without JSON parsing
+            return {"response": response}
+            
     except Exception as e:
         logger.error(f"Error generating itinerary: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
