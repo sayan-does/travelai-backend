@@ -191,224 +191,86 @@ create_text_from_files(directory_to_scan, output_file_name)
 print(f"Contents of all files in '{directory_to_scan}' have been saved to '{output_file_name}'.")
 
 ==================================================
-Contents of file: I:\travelai-backend\test.py
-import requests
-
-response = requests.get(
-    "http://127.0.0.1:8000/",
-    json={"message": "Hello, world!"}
-)
-print(response.json())
-
-response = requests.post(
-    "http://127.0.0.1:8000/chat",
-    json={"message": "Hello, how are you?"}
-)
-print(response.json())
-==================================================
 Contents of file: I:\travelai-backend\test_end.py
 import requests
-from datetime import datetime, timedelta
 import json
-import logging
+from datetime import date
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Base URL for the API
+BASE_URL = "http://localhost:8080"  
 
-# Base URL - Change this according to your environment
-BASE_URL = "http://localhost:8080"  # Local development
-
-# System prompt from LLMService
-SYSTEM_PROMPT = """You are an expert AI travel assistant. Your role is to:
-1. Create detailed, personalized travel itineraries
-2. Provide accurate local information and recommendations
-3. Consider budget constraints and preferences
-4. Give practical travel tips and cultural insights
-5. Maintain a friendly, professional tone
-
-When generating itineraries:
-- Include specific times for activities
-- Provide realistic cost estimates in USD
-- Consider local operating hours and seasonal factors
-- Balance tourist attractions with local experiences
-- Account for travel time between locations"""
-
-def test_health():
-    """Test the health check endpoint"""
-    try:
-        response = requests.get(f"{BASE_URL}/health")
-        assert response.status_code == 200
-        data = response.json()
-        logger.info(f"Health Check Response: {data}")
-        print("✓ Health check passed")
-        return True
-    except Exception as e:
-        logger.error(f"Health check failed: {str(e)}")
-        print(f"✗ Health check failed: {str(e)}")
-        return False
-
-def test_test_endpoint():
-    """Test the test endpoint"""
-    try:
-        response = requests.get(f"{BASE_URL}/test")
-        assert response.status_code == 200
-        data = response.json()
-        logger.info(f"Test Endpoint Response: {data}")
-        print("✓ Test endpoint check passed")
-        return True
-    except Exception as e:
-        logger.error(f"Test endpoint check failed: {str(e)}")
-        print(f"✗ Test endpoint check failed: {str(e)}")
-        return False
-
-def test_generate_itinerary():
-    """Test the generate-itinerary endpoint"""
-    try:
-        # Calculate dates for a 3-day trip starting next month
-        start_date = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d")
-        end_date = (datetime.now() + timedelta(days=32)).strftime("%Y-%m-%d")
-        
-        payload = {
-            "destination": "Paris",
-            "start_date": start_date,
-            "end_date": end_date,
-            "budget_level": "moderate"  # Using enum value from BudgetLevel
-        }
-        
-        response = requests.post(f"{BASE_URL}/generate-itinerary", json=payload)
-        assert response.status_code == 200
-        
-        data = response.json()
-        # Validate response structure
-        assert "destination" in data
-        assert "daily_plans" in data
-        assert "total_cost_estimate" in data
-        
-        logger.info(f"Itinerary Generation Response: {json.dumps(data, indent=2)}")
-        print("✓ Itinerary generation test passed")
-        return data
-    except Exception as e:
-        logger.error(f"Itinerary generation test failed: {str(e)}")
-        print(f"✗ Itinerary generation test failed: {str(e)}")
-        return None
-
-def test_chat():
-    """Test the chat endpoint"""
-    try:
-        test_queries = [
-            "What are the must-visit attractions in Paris?",
-            "Can you suggest budget-friendly restaurants in Paris?",
-            "What's the best time to visit the Eiffel Tower?"
-        ]
-        
-        for query in test_queries:
-            # Format the prompt with system context
-            formatted_prompt = f"{SYSTEM_PROMPT}\n\nUser: {query}\n\nAssistant:"
-            
-            payload = {
-                "message": formatted_prompt
-            }
-            
-            response = requests.post(f"{BASE_URL}/chat", json=payload)
-            assert response.status_code == 200
-            
-            data = response.json()
-            assert "response" in data
-            
-            logger.info(f"Chat Query: {query}")
-            logger.info(f"Response: {data['response'][:100]}...")  # First 100 chars
-            
-        print("✓ Chat test passed")
-        return True
-    except Exception as e:
-        logger.error(f"Chat test failed: {str(e)}")
-        print(f"✗ Chat test failed: {str(e)}")
-        return False
-
-def test_error_handling():
-    """Test error handling with invalid inputs"""
-    try:
-        # Test with invalid date format
-        payload = {
-            "destination": "Paris",
-            "start_date": "invalid-date",
-            "end_date": "invalid-date",
-            "budget_level": "moderate"
-        }
-        
-        response = requests.post(f"{BASE_URL}/generate-itinerary", json=payload)
-        assert response.status_code == 422  # Expecting validation error
-        
-        # Test with invalid budget level
-        payload = {
-            "destination": "Paris",
-            "start_date": "2024-01-01",
-            "end_date": "2024-01-02",
-            "budget_level": "invalid"
-        }
-        
-        response = requests.post(f"{BASE_URL}/generate-itinerary", json=payload)
-        assert response.status_code == 422  # Expecting validation error
-        
-        print("✓ Error handling test passed")
-        return True
-    except Exception as e:
-        logger.error(f"Error handling test failed: {str(e)}")
-        print(f"✗ Error handling test failed: {str(e)}")
-        return False
-
-def run_all_tests():
-    """Run all test functions"""
-    print("\nStarting API Tests...")
-    print("=" * 50)
+def test_get_itinerary_prompt():
+    """Test the get-itinerary-prompt endpoint"""
+    print("\nTesting /get-itinerary-prompt endpoint...")
     
-    test_results = {
-        "health_check": False,
-        "test_endpoint": False,
-        "itinerary_generation": False,
-        "chat": False,
-        "error_handling": False
+    url = f"{BASE_URL}/get-itinerary-prompt"
+    
+    # Test data
+    params = {
+        "destination": "Paris",
+        "start_date": "2025-05-01",
+        "end_date": "2025-05-07",
+        "budget_level": "moderate"
     }
     
     try:
-        # Run tests
-        test_results["health_check"] = test_health()
-        test_results["test_endpoint"] = test_test_endpoint()
+        response = requests.post(url, params=params)
+        response.raise_for_status()
         
-        if test_results["health_check"]:
-            itinerary_data = test_generate_itinerary()
-            test_results["itinerary_generation"] = bool(itinerary_data)
-            
-            if test_results["itinerary_generation"]:
-                test_results["chat"] = test_chat()
-                test_results["error_handling"] = test_error_handling()
+        result = response.json()
+        print("✅ Successfully received prompt")
+        print("Prompt preview:", result["prompt"][:1200] + "...")
+        return result["prompt"]
         
-        # Print summary
-        print("\nTest Summary:")
-        print("-" * 30)
-        for test_name, result in test_results.items():
-            status = "✓ Passed" if result else "✗ Failed"
-            print(f"{test_name}: {status}")
-        
-        # Calculate overall success
-        success_rate = sum(1 for result in test_results.values() if result) / len(test_results) * 100
-        print(f"\nOverall Success Rate: {success_rate:.1f}%")
-        
-    except requests.exceptions.ConnectionError:
-        logger.error("Connection error: Unable to connect to the server")
-        print("\n✗ Connection error: Unable to connect to the server")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        print(f"\n✗ Unexpected error: {str(e)}")
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error testing get-itinerary-prompt: {str(e)}")
+        if hasattr(e, 'response'):
+            print("Error details:", e.response.text)
+        raise
+
+def test_get_itinerary(prompt: str):
+    """Test the get-itinerary endpoint"""
+    print("\nTesting /get-itinerary endpoint...")
     
-    print("=" * 50)
+    url = f"{BASE_URL}/get-itinerary"
+    
+    params = {
+        "prompt": prompt
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        result = response.json()
+        print("✅ Successfully generated itinerary")
+        print("\nGenerated Itinerary:")
+        print(json.dumps(result, indent=2))
+        
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error testing get-itinerary: {str(e)}")
+        if hasattr(e, 'response'):
+            print("Error details:", e.response.text)
+        raise
+
+def main():
+    print("Starting API tests...")
+    try:
+        # Test get-itinerary-prompt endpoint
+        prompt = test_get_itinerary_prompt()
+        print(type(prompt))
+        
+        # Test get-itinerary endpoint with the received prompt
+        test_get_itinerary(prompt)
+        
+        print("\n✅ All tests passed successfully!")
+        
+    except Exception as e:
+        print(f"\n❌ Tests failed: {str(e)}")
+        exit(1)
 
 if __name__ == "__main__":
-    run_all_tests()
+    main()
 ==================================================
 Contents of file: I:\travelai-backend\.git\COMMIT_EDITMSG
 fixed issues
@@ -436,7 +298,7 @@ Unnamed repository; edit this file 'description' to name the repository.
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\FETCH_HEAD
-0ed4b9251fd3ac1e90d2dac898a21746af748055		branch 'master' of https://github.com/sayan-does/travelai-backend
+68bde52e52dec0c2907ed62be3d50c52a8bea295		branch 'master' of https://github.com/sayan-does/travelai-backend
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\HEAD
@@ -1381,6 +1243,7 @@ b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189d
 3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654882 +0530	commit: fixed issues
 63133487e5d1e862404b8260f4fa8247caf38cea cee668d2210b34bda2218101a9bb044a418e08a4 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737662311 +0530	commit: fixed issues 24,fri
 cee668d2210b34bda2218101a9bb044a418e08a4 0ed4b9251fd3ac1e90d2dac898a21746af748055 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737717483 +0530	commit: fixed issues
+0ed4b9251fd3ac1e90d2dac898a21746af748055 68bde52e52dec0c2907ed62be3d50c52a8bea295 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737815089 +0530	commit: fixed issues
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\logs\refs\heads\master
@@ -1393,6 +1256,7 @@ b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189d
 3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654882 +0530	commit: fixed issues
 63133487e5d1e862404b8260f4fa8247caf38cea cee668d2210b34bda2218101a9bb044a418e08a4 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737662311 +0530	commit: fixed issues 24,fri
 cee668d2210b34bda2218101a9bb044a418e08a4 0ed4b9251fd3ac1e90d2dac898a21746af748055 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737717483 +0530	commit: fixed issues
+0ed4b9251fd3ac1e90d2dac898a21746af748055 68bde52e52dec0c2907ed62be3d50c52a8bea295 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737815089 +0530	commit: fixed issues
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\logs\refs\remotes\origin\HEAD
@@ -1408,10 +1272,15 @@ b0cef7a3741ca913878605915d31d49b8659a7c3 5da966fd399b7cc7ae319892dcbd6958205189d
 3982ac51723ca31916dafe146e904d1912e02b8f 63133487e5d1e862404b8260f4fa8247caf38cea ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737654892 +0530	update by push
 63133487e5d1e862404b8260f4fa8247caf38cea cee668d2210b34bda2218101a9bb044a418e08a4 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737662338 +0530	update by push
 cee668d2210b34bda2218101a9bb044a418e08a4 0ed4b9251fd3ac1e90d2dac898a21746af748055 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737717498 +0530	update by push
+0ed4b9251fd3ac1e90d2dac898a21746af748055 68bde52e52dec0c2907ed62be3d50c52a8bea295 ICE_InDa_MIXER <104935198+sayan-does@users.noreply.github.com> 1737815096 +0530	update by push
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\00\7af26b23d928d6d186b664e458a1e2339f0a01
 Error reading file I:\travelai-backend\.git\objects\00\7af26b23d928d6d186b664e458a1e2339f0a01: 'utf-8' codec can't decode byte 0x8d in position 3: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\07\9555aa6d6c0b7d27de925cb356110d57f66b9f
+Error reading file I:\travelai-backend\.git\objects\07\9555aa6d6c0b7d27de925cb356110d57f66b9f: 'utf-8' codec can't decode byte 0xd5 in position 2: invalid continuation byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\0b\7f9b6e5b2e269e034a30717183589bc10d7534
@@ -1454,6 +1323,10 @@ Contents of file: I:\travelai-backend\.git\objects\39\82ac51723ca31916dafe146e90
 Error reading file I:\travelai-backend\.git\objects\39\82ac51723ca31916dafe146e904d1912e02b8f: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
 
 ==================================================
+Contents of file: I:\travelai-backend\.git\objects\3b\6833b7514f5bba73ed056dc6359af1877d2736
+Error reading file I:\travelai-backend\.git\objects\3b\6833b7514f5bba73ed056dc6359af1877d2736: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
+
+==================================================
 Contents of file: I:\travelai-backend\.git\objects\4f\b438ddb7d289d0ffadd69807f7134fd3aa9a94
 Error reading file I:\travelai-backend\.git\objects\4f\b438ddb7d289d0ffadd69807f7134fd3aa9a94: 'utf-8' codec can't decode byte 0x90 in position 3: invalid start byte
 
@@ -1472,6 +1345,10 @@ Error reading file I:\travelai-backend\.git\objects\60\ea599f38d776a2a1fbfcfd386
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\63\133487e5d1e862404b8260f4fa8247caf38cea
 Error reading file I:\travelai-backend\.git\objects\63\133487e5d1e862404b8260f4fa8247caf38cea: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\68\bde52e52dec0c2907ed62be3d50c52a8bea295
+Error reading file I:\travelai-backend\.git\objects\68\bde52e52dec0c2907ed62be3d50c52a8bea295: 'utf-8' codec can't decode byte 0xad in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\68\f77b705e829317a930ba34c737a338891a987e
@@ -1506,6 +1383,10 @@ Contents of file: I:\travelai-backend\.git\objects\8b\76c45069d520713f00bf69f10f
 Error reading file I:\travelai-backend\.git\objects\8b\76c45069d520713f00bf69f10f97f53de97dd1: 'utf-8' codec can't decode byte 0xd0 in position 18: invalid continuation byte
 
 ==================================================
+Contents of file: I:\travelai-backend\.git\objects\99\2aaf7eda4a86c9641422f469995ca12ce316c7
+Error reading file I:\travelai-backend\.git\objects\99\2aaf7eda4a86c9641422f469995ca12ce316c7: 'utf-8' codec can't decode byte 0xed in position 2: invalid continuation byte
+
+==================================================
 Contents of file: I:\travelai-backend\.git\objects\9c\78a2ced4e0f172ef0a023313aacb190b3c30ca
 Error reading file I:\travelai-backend\.git\objects\9c\78a2ced4e0f172ef0a023313aacb190b3c30ca: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
 
@@ -1516,6 +1397,10 @@ Error reading file I:\travelai-backend\.git\objects\9c\8c555d38476a93313c6e16bed
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\9d\528142dcc81c264ce64cf04fb5c31843fd4f25
 Error reading file I:\travelai-backend\.git\objects\9d\528142dcc81c264ce64cf04fb5c31843fd4f25: 'utf-8' codec can't decode byte 0x88 in position 18: invalid start byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\9d\ccb510633f3c8639d3f6a47ae307c0c200fdb6
+Error reading file I:\travelai-backend\.git\objects\9d\ccb510633f3c8639d3f6a47ae307c0c200fdb6: 'utf-8' codec can't decode byte 0xd0 in position 18: invalid continuation byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\a1\106c93101f1e113f637903785d8e414ee96ed4
@@ -1556,6 +1441,10 @@ Error reading file I:\travelai-backend\.git\objects\bf\6855ffeefd42444db4aae3d84
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\c3\bda6234aa2ec2fa3fb0a3a3ad473c7f9b563ca
 Error reading file I:\travelai-backend\.git\objects\c3\bda6234aa2ec2fa3fb0a3a3ad473c7f9b563ca: 'utf-8' codec can't decode byte 0xed in position 2: invalid continuation byte
+
+==================================================
+Contents of file: I:\travelai-backend\.git\objects\cb\4695de0509eca6f57f061fd4dda9678a19b162
+Error reading file I:\travelai-backend\.git\objects\cb\4695de0509eca6f57f061fd4dda9678a19b162: 'utf-8' codec can't decode byte 0xb5 in position 2: invalid start byte
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\objects\ce\e668d2210b34bda2218101a9bb044a418e08a4
@@ -1623,7 +1512,7 @@ Error reading file I:\travelai-backend\.git\objects\pack\pack-c7bd8f05ed3b301d6e
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\heads\master
-0ed4b9251fd3ac1e90d2dac898a21746af748055
+68bde52e52dec0c2907ed62be3d50c52a8bea295
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\remotes\origin\HEAD
@@ -1631,7 +1520,7 @@ ref: refs/remotes/origin/master
 
 ==================================================
 Contents of file: I:\travelai-backend\.git\refs\remotes\origin\master
-0ed4b9251fd3ac1e90d2dac898a21746af748055
+68bde52e52dec0c2907ed62be3d50c52a8bea295
 
 ==================================================
 Contents of file: I:\travelai-backend\app\config.py
@@ -1657,17 +1546,15 @@ Contents of file: I:\travelai-backend\app\main.py
 # main.py
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.middleware.gzip import GZipMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
 from pydantic import BaseModel
-from datetime import date, timedelta
+from datetime import date
 from typing import Optional, List
 from enum import Enum
 import logging
 from .config import settings
 from .services.llm_service import LLMService
+import torch
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -1690,34 +1577,10 @@ app.add_middleware(
 # Initialize LLM service
 llm_service = LLMService()
 
-# Models
 class BudgetLevel(str, Enum):
     BUDGET = "budget"
     MODERATE = "moderate"
     LUXURY = "luxury"
-
-class Activity(BaseModel):
-    title: str
-    description: str
-    time: str
-    cost_estimate: float
-
-class DayPlan(BaseModel):
-    date: date
-    activities: List[Activity]
-
-class TripItinerary(BaseModel):
-    destination: str
-    start_date: date
-    end_date: date
-    budget_level: BudgetLevel
-    daily_plans: List[DayPlan]
-    total_cost_estimate: float
-
-# Endpoints
-@app.get("/")
-async def health_check():
-    return {"status": "healthy"}
 
 @app.post("/get-itinerary-prompt")
 async def get_itinerary_prompt(
@@ -1729,13 +1592,11 @@ async def get_itinerary_prompt(
     try:
         logger.info(f"Creating itinerary prompt for {destination}")
         
-        # Create the prompt using the LLM service
-        prompt = llm_service.create_itinerary_prompt(
-            destination,
-            start_date,
-            end_date,
-            budget_level
-        )
+        # Create user input for the prompt
+        user_input = f"Create a travel itinerary for {destination} from {start_date} to {end_date} with a {budget_level} budget."
+        context = f"Destination: {destination}\nDates: {start_date} to {end_date}\nBudget: {budget_level}"
+        
+        prompt = llm_service._create_prompt(user_input, context)
         
         return {"prompt": prompt}
     except Exception as e:
@@ -1755,42 +1616,38 @@ async def get_itinerary(
         
         # If no prompt is provided, create one
         if not prompt:
-            prompt = llm_service.create_itinerary_prompt(
-                destination,
-                start_date,
-                end_date,
-                budget_level
+            prompt = llm_service._create_prompt(
+                f"Create a travel itinerary for {destination} from {start_date} to {end_date} with a {budget_level} budget.",
+                f"Destination: {destination}\nDates: {start_date} to {end_date}\nBudget: {budget_level}"
             )
         
-        # Generate response using LLM service
-        daily_activities = await llm_service.generate_from_prompt(prompt)
+        # Generate response from LLM
+        inputs = llm_service.tokenizer(prompt, return_tensors="pt").to(llm_service.model.device)
         
-        # Convert the activities into DayPlan objects
-        daily_plans = []
-        current_date = start_date
-
-        for day_activities in daily_activities:
-            activities = [Activity(**activity) for activity in day_activities]
-            daily_plans.append(DayPlan(
-                date=current_date,
-                activities=activities
-            ))
-            current_date += timedelta(days=1)
-
-        total_cost = sum(
-            activity.cost_estimate
-            for day in daily_plans
-            for activity in day.activities
-        )
-
-        return TripItinerary(
-            destination=destination,
-            start_date=start_date,
-            end_date=end_date,
-            budget_level=budget_level,
-            daily_plans=daily_plans,
-            total_cost_estimate=total_cost
-        )
+        with torch.no_grad():
+            try:
+                outputs = llm_service.model.generate(
+                    **inputs,
+                    max_new_tokens=1024,
+                    temperature=0.7,
+                    top_p=0.9,
+                    repetition_penalty=1.1
+                )
+                
+                response = llm_service.tokenizer.decode(outputs[0], skip_special_tokens=True)
+                logger.info(f"Generated response: {response}")
+                
+                try:
+                    itinerary_json = json.loads(response)
+                    return itinerary_json
+                except json.JSONDecodeError as e:
+                    logger.error(f"Error parsing response as JSON: {response}")
+                    raise HTTPException(status_code=500, detail=f"Invalid JSON response: {str(e)}")
+                
+            except Exception as e:
+                logger.error(f"Error in model generation: {str(e)}")
+                raise HTTPException(status_code=500, detail=f"Model generation error: {str(e)}")
+                
     except Exception as e:
         logger.error(f"Error generating itinerary: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -2053,7 +1910,7 @@ Error reading file I:\travelai-backend\app\__pycache__\config.cpython-310.pyc: '
 
 ==================================================
 Contents of file: I:\travelai-backend\app\__pycache__\main.cpython-310.pyc
-Error reading file I:\travelai-backend\app\__pycache__\main.cpython-310.pyc: 'utf-8' codec can't decode byte 0xe3 in position 16: invalid continuation byte
+Error reading file I:\travelai-backend\app\__pycache__\main.cpython-310.pyc: 'utf-8' codec can't decode byte 0xcc in position 8: invalid continuation byte
 
 ==================================================
 Contents of file: I:\travelai-backend\app\__pycache__\__init__.cpython-310.pyc
